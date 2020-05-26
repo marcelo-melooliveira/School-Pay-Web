@@ -2,13 +2,17 @@ import React, {useState, useMemo, useEffect} from 'react';
 import { format, parseISO } from 'date-fns';
 import pt from 'date-fns/locale/pt';
 import { RiExchangeDollarLine } from 'react-icons/ri';
+import { Digital } from 'react-activity';
+import 'react-activity/dist/react-activity.css';
 import api from '~/services/api';
 
-import { Container, Time} from './styles';
+
+import { Container, Time, LoadContainer} from './styles';
 
 function Dashboard() {
   const [date, setDate] = useState(new Date());
   const [payData, setPayData] = useState();
+  const [load, setLoad] = useState(true);
 
   const dateFormatted = useMemo(
     () => format(date, "d 'de' MMMM", { locale: pt }),
@@ -58,6 +62,7 @@ function Dashboard() {
    
 
     setPayData(aux_payData);
+    setLoad(false);
    
   }
 
@@ -80,7 +85,8 @@ function Dashboard() {
       <strong>MOVIMENTAÇÕES DE HOJE</strong>
       <strong> ( {dateFormatted} ) </strong>
     </header>
-      {payData}
+    {load ? (<LoadContainer><Digital color='#FFF' size={40} /></LoadContainer>):(payData)}
+    
     </Container>
   )
  

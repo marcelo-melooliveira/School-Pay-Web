@@ -24,6 +24,7 @@ export const Container = styled.div`
       color: #fff;
       font-size: 20px;
       margin: 0 15px;
+      cursor: pointer;
     }
   }
 
@@ -61,4 +62,11 @@ export const LoadContainer = styled.div`
   justify-content:center;
   align-items:center;
   display: flex;
+
+  strong {
+      color: #fff;
+      font-size: 20px;
+      margin: 0 15px;
+      font-weight:bold;
+    }
   ;`
