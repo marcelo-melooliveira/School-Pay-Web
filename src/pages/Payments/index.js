@@ -55,13 +55,13 @@ function Payments() {
                   const data = parseISO(value.data_pagamento);               
                    data_formatada = `Data: ${format(
                   data, 
-                  "'Hoje ás' HH:mm"
+                  "dd'/'MM 'ás' HH:mm"
                 )}`
                 }else{
                   const data = parseISO(value.data_criacao);               
                   data_formatada = `Data: ${format(
                  data, 
-                 "'Hoje ás' HH:mm"
+                 "dd'/'MMMM 'ás' HH:mm"
                )}`
 
                 }

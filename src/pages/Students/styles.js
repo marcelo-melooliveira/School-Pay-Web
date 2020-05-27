@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { darken } from 'polished';
 
 export const Container = styled.div`
   max-width: 600px;
@@ -135,4 +136,91 @@ button {
       justify-content:center;
       align-items:center;
     }
+`;
+
+export const ButtonContainer = styled.div`
+display:flex;
+button {
+      margin-left:20px;
+      padding: 0 15px;
+      height: 45px;
+      background: #3b9eff;
+      font-weight: bold;
+      color: #fff;
+      border: 0;
+      border-radius: 4px;
+      font-size: 16px;
+      transition: background 0.2s;
+
+      &:hover {
+        background: ${darken(0.03, '#3b9eff')};
+      }
+    }
+`;
+
+export const ModalContiner = styled.div`
+  display: flex;
+  width:100%;
+  height:100%;
+  border-radius:10px;
+  background: linear-gradient(-90deg, #2E2E2E, #210B61);
+  align-items:center;
+  flex-direction: column;
+  
+  strong {
+      color: #fff;
+      font-size: 20px;
+      margin-top:10px;
+    }
+
+
+  form{
+    display:flex;
+    flex-direction: column;
+    margin: 0 10px;
+    
+  input {
+      display:flex;
+      background: rgba(255, 255, 255, 0.85);
+      border: 0;
+      border-radius: 8px;
+      width:450px;
+      height: 41px;
+      padding: 0 15px;
+      color: #000;
+      margin: 10px 0 10px;
+
+      &::placeholder {
+        color: #AAA
+      }
+    }
+
+    span {
+      color: #FE2E64;
+      align-self: flex-start;
+      margin: 0 0 5px;
+      font-weight: bold;
+
+      width: 100%;
+      text-align: center;
+    }
+
+    button {
+      margin: 5px 0 0;
+      height: 44px;
+      background: #3b9eff;
+      font-weight: bold;
+      color: #fff;
+      border: 0;
+      border-radius: 4px;
+      font-size: 16px;
+      transition: background 0.2s;
+
+      &:hover {
+        background: ${darken(0.03, '#3b9eff')};
+      }
+    }
+
+  }
+
 `;
