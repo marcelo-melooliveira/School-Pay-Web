@@ -319,7 +319,7 @@ function openModal_SelectedStudents(index){
           <strong>RG: {selectedStudents.rg}</strong>
           <strong>Endereço: {selectedStudents.endereco}</strong>
           <strong>Telefone: {selectedStudents.telefone}</strong>
-          <strong>Mensalidade: {selectedStudents.valor_mensalidade}</strong>
+          <strong>Mensalidade: R${selectedStudents.valor_mensalidade}</strong>
         </div>
         
         <div style={{display:'flex', width:'100%', justifyContent:'center', marginTop:35}}>
