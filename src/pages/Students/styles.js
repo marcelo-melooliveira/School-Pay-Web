@@ -103,7 +103,7 @@ header {
 }
 ;`
 
-export const InputContainer = styled.div`
+export const SearchContainer = styled.div`
 
 display:flex;
 justify-content:center;
@@ -158,7 +158,7 @@ button {
     }
 `;
 
-export const ModalContiner = styled.div`
+export const ModalContainer = styled.div`
   display: flex;
   width:100%;
   height:100%;
@@ -174,16 +174,32 @@ export const ModalContiner = styled.div`
     }
 
 
-  form{
+  form {
     display:flex;
     flex-direction: column;
     margin: 0 10px;
-    
-  input {
+  }
+
+    div {
+      display:flex;
+      flex-direction: row;
+      align-items:center;
+
+      strong {
+      display:flex;
+      width:100px;
+      height: 41px;
+      align-items:center;
+      justify-content:center;
+      color: #fff;
+      background-color: #8A0808;
+      font-size: 15px;
+      margin-top:0px;
+    }
+      input {
       display:flex;
       background: rgba(255, 255, 255, 0.85);
       border: 0;
-      border-radius: 8px;
       width:450px;
       height: 41px;
       padding: 0 15px;
@@ -197,12 +213,11 @@ export const ModalContiner = styled.div`
 
     span {
       color: #FE2E64;
-      align-self: flex-start;
+      align-self:center;
       margin: 0 0 5px;
       font-weight: bold;
-
-      width: 100%;
       text-align: center;
+      }
     }
 
     button {
@@ -217,10 +232,49 @@ export const ModalContiner = styled.div`
       transition: background 0.2s;
 
       &:hover {
-        background: ${darken(0.03, '#3b9eff')};
+        background: ${darken(0.08, '#3b9eff')};
       }
+   
+    }
+  
+`;
+
+
+
+export const ModalInfoContainer = styled.div`
+  display: flex;
+  width:100%;
+  height:100%;
+  border-radius:10px;
+  background: linear-gradient(-90deg, #2E2E2E, #210B61);
+  flex-direction: column;
+  
+
+      strong {
+      display:flex;
+      color: #fff;
+      font-size: 15px;
+      margin-top:0px;
+      margin-bottom:10px;
     }
 
-  }
+    button {
+      margin: 5px 0 0;
+      height: 44px;
+      width: 40%;
+      margin: 0 10px 0 10px;
+      background: #3b9eff;
+      font-weight: bold;
+      color: #fff;
+      border: 0;
+      border-radius: 4px;
+      font-size: 16px;
+      transition: background 0.2s;
 
-`;
+      &:hover {
+        background: ${darken(0.08, '#3b9eff')};
+      }
+   
+    }
+      `;
+

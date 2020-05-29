@@ -1,5 +1,6 @@
-import React, {useState, useMemo, useEffect} from 'react';
-import { Form, Input } from '@rocketseat/unform';
+import React, {useState, useMemo, useEffect, useRef} from 'react';
+// import { Form, Input} from '@rocketseat/unform'
+import { Form } from '@unform/web';
 import Modal from 'react-awesome-modal';
 import { BsFillPeopleFill } from 'react-icons/bs';
 import { Digital } from 'react-activity';
@@ -7,38 +8,45 @@ import * as Yup from 'yup';
 import { toast } from 'react-toastify';
 import 'react-activity/dist/react-activity.css';
 import api from '~/services/api';
+import Input from '../../components/Form/Input'
 
 import { Container,
          Time,
          LoadContainer,
          StudentsContainer,
          HeaderContainer,
-         InputContainer,
+         SearchContainer,
          HeaderLista,
          ButtonContainer,
-         ModalContiner
+         ModalContainer,
+         ModalInfoContainer
         } from './styles';
 
 
 const schema = Yup.object().shape({
   matricula: Yup.string(),
-  username: Yup.string().required('O nome é obrigatório'),
+  username: Yup.string().required('obrigatório'),
   cpf: Yup.string(),
   rg: Yup.string(),
-  endereco: Yup.string().required('O endereço é obrigatório').max(254),
+  endereco: Yup.string().required('obrigatório').max(254),
   telefone: Yup.string()
-    .required('O telefone é obrigatório'),
+    .required('obrigatório'),
   valor_mensalidade: Yup.string()
-    .required('A mensalidade é obrigatória'),
+    .required('obrigatória'),
 });
 
 function Students() {
 
   const [studentList, setStudentList] = useState([]);
   const [dataStudents, setDataStudents] = useState([]);
+  const [selectedStudents, setSelectedStudents] = useState([]);
   const [load, setLoad] = useState(true);
-  const [openModal, setOpenModal] = useState(false);
+  const [openModalAdd, setOpenModalAdd] = useState(false);
+  const [openModalInfoStudent, setOpenModalInfoStudent] = useState(false);
+  const [openModalUpdate, setOpenModalUpdate] = useState(false);
   const [search, setSearch] = useState('');
+
+  const formRef = useRef(null);
 
 
  
@@ -56,9 +64,10 @@ async function fetch_students(){
 
  
 
-  // useEffect(()=>{
-  //   alert(search)
-  // }, [search])
+  useEffect(()=>{
+    formRef.current.setData(selectedStudents);  
+  }, [selectedStudents])
+
 
   function SearchStudents (nome){
     setSearch(nome);
@@ -74,35 +83,109 @@ async function fetch_students(){
 
  
 
-  async function handleSubmit(data){
-    // alert("Entrou no submit")
-    // console.tron.log(data)
-    const response = await api.post('students',{
-      username : data.username,
-	    matricula : parseInt(data.matricula),
-	    cpf : data.cpf,
-	    rg : data.rg,
-	    endereço : data.endereco,
-      telefone : data.telefone,
-      valor_mensalidade: parseFloat(data.valor_mensalidade)
-    });
+  async function criarAluno(data){
+   
+     
+     try {
 
-    console.tron.log(response.data)
+        await schema.validate(data, {
+          abortEarly: false,
+        });
 
-    if(response.data.username){
-        fetch_students();
-        setOpenModal(false)
-        toast.success('Aluno salvo com sucesso')
-    }else{
-      setOpenModal(false)
-      toast.error('Ops. Houve algum erro no cadastro');
-    }
-      
- }
+          const response = await api.post('students',{
+            username : data.username,
+            matricula : parseInt(data.matricula),
+            cpf : data.cpf,
+            rg : data.rg,
+            endereco : data.endereco,
+            telefone : data.telefone,
+            valor_mensalidade: parseFloat(data.valor_mensalidade)
+          });
+          
+          if(response.data.username){
+              fetch_students();
+              setOpenModalAdd(false)
+              toast.success('Aluno salvo com sucesso')
+          }else{
+            setOpenModalAdd(false)
+            toast.error('Ops. Houve algum erro no cadastro');
+          }
+
+      }catch(err){
+        
+      const validationErrors = {};
+      if (err instanceof Yup.ValidationError) {
+        alert("Erro no cadastro, verifique os dados inseridos!")
+        err.inner.forEach(error => {
+          console.tron.log(error)
+          validationErrors[error.path] = error.message;
+        });
+        
+        formRef.current.setErrors(validationErrors);
+      }
+
+  }
+    
+  }
   
 
- 
 
+
+ async function editarAluno(data){
+  
+  try {
+
+    await schema.validate(data, {
+      abortEarly: false,
+    });
+
+  const data_fetch = {
+    id: selectedStudents.id,
+    username : data.username,
+    matricula : parseInt(data.matricula),
+    cpf : data.cpf,
+    rg : data.rg,
+    endereco : data.endereco,
+    telefone : data.telefone,
+    valor_mensalidade: parseFloat(data.valor_mensalidade)
+  }
+ const response = await api.put('students', data_fetch);
+
+ // setLogData(response.data);
+
+ if(response.data.sucess){
+     fetch_students();
+     setOpenModalUpdate(false);
+     setSelectedStudents([]);
+     toast.success('Aluno editado com sucesso');
+ }else{
+   setOpenModalUpdate(false);
+   setSelectedStudents([]);
+   toast.error('Ops. Houve algum erro no edição');
+ }
+}catch(err){
+
+      const validationErrors = {};
+      if (err instanceof Yup.ValidationError) {
+        alert("Erro na edição, verifique os dados inseridos!")
+        err.inner.forEach(error => {
+          console.tron.log(error)
+          validationErrors[error.path] = error.message;
+        });
+        
+        formRef.current.setErrors(validationErrors);
+      }
+
+}
+   
+}
+function openModal_SelectedStudents(index){
+  setSelectedStudents(dataStudents[index]);
+   setOpenModalInfoStudent(true)
+
+
+}
+ 
   return(
     <Container>
     <HeaderContainer>
@@ -112,7 +195,7 @@ async function fetch_students(){
       </header>
     </HeaderContainer>
 
-    <InputContainer style={{display:'flex', justifyContent:'center'}}>
+    <SearchContainer style={{display:'flex', justifyContent:'center'}}>
       <input
       name='nome'
       type="text"
@@ -120,7 +203,7 @@ async function fetch_students(){
       value={search}
       onChange={(event) => SearchStudents(event.target.value)}
     />    
-    </InputContainer>
+    </SearchContainer>
     
     {load ? (<LoadContainer><Digital color='#FFF' size={40} /></LoadContainer>):(<StudentsContainer>
       
@@ -136,22 +219,22 @@ async function fetch_students(){
       </div>
 
       <ButtonContainer>
-        <button type='button' onClick={()=> setOpenModal(true)}>Adicionar aluno</button>
+        <button type='button' onClick={()=> setOpenModalAdd(true)}>Adicionar aluno</button>
       </ButtonContainer>
       
     </HeaderLista>
     {
-      studentList.map((value) => {
+      studentList.map((value, index) => {
         return  <HeaderLista key={`page${ value.id}`}>
               <div style={{height:45, width:130,paddingTop:15, paddingLeft:10, backgroundColor:'#AAA'}}>
-                  <button type="button" onClick={() => null}>
+                  <button type="button" onClick={() => openModal_SelectedStudents(index)}>
                     <strong>{value.matricula}</strong>
                   </button>
               
               </div>
 
               <div style={{height:45,width:430, backgroundColor:'#AAA', marginLeft:1,paddingTop:15, paddingLeft:10}}>
-                  <button type="button" onClick={() => null}>
+                  <button type="button" onClick={() => openModal_SelectedStudents(index)}>
                     <strong>{value.username}</strong>
                   </button>
               </div>
@@ -164,29 +247,146 @@ async function fetch_students(){
       </StudentsContainer>)}
     
       <Modal 
-      visible={openModal}
+      visible={openModalAdd}
       width="700"
       height="600"
       effect="fadeInUp"
-      onClickAway={() => setOpenModal(false)}
+      onClickAway={() => setOpenModalAdd(false)}
   >
-      <ModalContiner>
+      <ModalContainer>
       <strong>Cadastro de aluno</strong>
       
-        <Form schema={schema} onSubmit={(data) => handleSubmit(data)}>
-        <Input name="matricula" type='text' placeholder="Digite a matricula" />
-        <Input name="username" type='text' placeholder="Digite o nome" />
-        <Input name="cpf" type='text' placeholder="Digite o CPF" />
-        <Input name="rg" type='text' placeholder="Digite o RG" />
-        <Input name="endereco" type='text' placeholder="Digite o endereço" />
-        <Input name="telefone" type='tel' placeholder="Digite o telefone" />
-        <Input name="valor_mensalidade" type='text' placeholder="Valor da mensalidade" />
-        
-        <button type="submit">Salvar</button>
+        <Form ref={formRef} onSubmit={(data) => criarAluno(data)}>
+            <div>
+              <strong>Matricula</strong>
+              <Input name="matricula" type='text' placeholder="Digite a matricula" />
+            </div>
+            
+            <div>
+              <strong>Nome</strong>
+              <Input name="username" type='text' placeholder="Digite o nome (obrigatório)" />
+            </div>
+            
+            <div>
+              <strong>CPF</strong>
+              <Input name="cpf" type='text' placeholder="Digite o CPF" />
+            </div>
+
+            <div>
+              <strong>RG</strong>
+              <Input name="rg" type='text' placeholder="Digite o RG" />
+            </div>
+
+            <div>
+              <strong>Endereço</strong>
+              <Input name="endereco" type='text' placeholder="Digite o endereço (obrigatório)" />
+          </div>
+            
+          <div>
+            <strong>Telefone</strong>
+            <Input name="telefone" type='text' placeholder="Digite o telefone (obrigatório)" />
+          </div>
+
+          <div>
+            <strong>Mensalidade</strong>
+            <Input name="valor_mensalidade" type='text' placeholder="Valor da mensalidade (obrigatório)" />
+          </div>
+
+            <button type="submit">Salvar</button>
 
         </Form>
-      </ModalContiner>
+      </ModalContainer>
   </Modal>
+
+
+ 
+  <Modal 
+  visible={openModalInfoStudent}
+  width="700"
+  height="600"
+  effect="fadeInUp"
+  onClickAway={() => setOpenModalInfoStudent(false)}
+>
+  <ModalInfoContainer>
+  <div style={{display:'flex', width:'100%', justifyContent:'center', paddingTop:15, paddingBottom:15}}>
+    <strong style={{fontSize:20}}>{selectedStudents.username}</strong>
+  </div>
+  
+    
+        <div style={{display:'flex', flexDirection:"column", paddingLeft:15}}>
+          <strong>Matricula: {selectedStudents.matricula}</strong>
+          <strong>CPF: {selectedStudents.cpf}</strong>
+          <strong>RG: {selectedStudents.rg}</strong>
+          <strong>Endereço: {selectedStudents.endereco}</strong>
+          <strong>Telefone: {selectedStudents.telefone}</strong>
+          <strong>Mensalidade: {selectedStudents.valor_mensalidade}</strong>
+        </div>
+        
+        <div style={{display:'flex', width:'100%', justifyContent:'center', marginTop:35}}>
+        <button type="button" onClick={()=>{
+                                            setOpenModalInfoStudent(false);
+                                            setOpenModalUpdate(true)}}>
+                Editar</button>
+        <button style={{backgroundColor:'#FE2E64'}} type="button">Deletar</button>
+        </div>
+  
+  </ModalInfoContainer>
+</Modal>
+
+
+
+<Modal 
+      visible={openModalUpdate}
+      width="700"
+      height="600"
+      effect="fadeInUp"
+      onClickAway={() => setOpenModalUpdate(false)}
+  >
+      <ModalContainer>
+      <strong>Editar cadastro de aluno</strong>
+      
+        <Form ref={formRef} onSubmit={(data) => editarAluno(data)}>
+            <div>
+              <strong>Matricula</strong>
+              <Input name="matricula" type='text' placeholder="Digite a matricula" />
+            </div>
+            
+            <div>
+              <strong>Nome</strong>
+              <Input name="username" type='text' placeholder="Digite o nome (obrigatório)" />
+            </div>
+            
+            <div>
+              <strong>CPF</strong>
+              <Input name="cpf" type='text' placeholder="Digite o CPF" />
+            </div>
+
+            <div>
+              <strong>RG</strong>
+              <Input name="rg" type='text' placeholder="Digite o RG" />
+            </div>
+
+            <div>
+              <strong>Endereço</strong>
+              <Input name="endereco" type='text' placeholder="Digite o endereço (obrigatório)" />
+          </div>
+            
+          <div>
+            <strong>Telefone</strong>
+            <Input name="telefone" type='text' placeholder="Digite o telefone (obrigatório)" />
+          </div>
+
+          <div>
+            <strong>Mensalidade</strong>
+            <Input name="valor_mensalidade" type='text' placeholder="Valor da mensalidade (obrigatório)" />
+          </div>
+
+          <button type="submit">Salvar</button>
+
+        </Form>
+      </ModalContainer>
+  </Modal>
+ 
 
     </Container>
   )
