@@ -1,1 +1,2 @@
 / * /index.html 200
+/session/* http://178.128.154.80:3333/session/:splat 200!
