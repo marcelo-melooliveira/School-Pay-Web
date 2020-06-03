@@ -1,12 +1,14 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-  max-width: 600px;
+  max-width: 1300px;
   margin: 50px auto;
   padding-top: 15px;
 
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items:center;
 
   header {
     display: flex;
@@ -34,6 +36,59 @@ export const Container = styled.div`
     grid-gap: 15px;
     margin-top: 30px;
   }
+`;
+
+export const GlobalPaymentsContainer = styled.div`
+  display:flex;
+  flex-direction:row;
+  padding-top:20px;
+`;
+
+export const PaymentsContainer = styled.div`
+max-width: 600px;
+padding-left: 10px;
+padding-right: 10px;
+padding-bottom: 20px;
+border-radius:5px;
+display: flex;
+background-color:#F2F2F2;
+flex-direction: column;
+margin-top:5px;
+margin: 0 10px;
+
+
+header {
+    display: flex;
+    width: 600px;
+    height: 35px;
+    align-self: center;
+    align-items: center;
+    background-color:#7159c1;
+    padding-left: 15px;
+    margin-top:1px;
+
+    strong {
+    display: block;
+    color: #FFF;
+    font-size: 20px;
+    font-weight: normal;
+  }
+}
+;`
+
+export const HeaderLista = styled.div`
+display:flex;
+flex-direction:row;
+margin-top:1px;
+
+button {
+      border: 0;
+      background: none;
+    }
+    div {
+      justify-content:center;
+      align-items:center;
+    }
 `;
 
 export const Time = styled.li`

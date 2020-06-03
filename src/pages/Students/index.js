@@ -7,6 +7,8 @@ import { Digital } from 'react-activity';
 import * as Yup from 'yup';
 import { toast } from 'react-toastify';
 import 'react-activity/dist/react-activity.css';
+import { confirmAlert } from 'react-confirm-alert'; // Import
+import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 import api from '~/services/api';
 import Input from '../../components/Form/Input'
 
@@ -31,8 +33,8 @@ const schema = Yup.object().shape({
   endereco: Yup.string().required('obrigatório').max(254),
   telefone: Yup.string()
     .required('obrigatório'),
-  valor_mensalidade: Yup.string()
-    .required('obrigatória'),
+  valor_mensalidade: Yup.string().required('obrigatório'),
+  nome_responsavel: Yup.string().required('obrigatório'),
 });
 
 function Students() {
@@ -99,7 +101,8 @@ async function fetch_students(){
             rg : data.rg,
             endereco : data.endereco,
             telefone : data.telefone,
-            valor_mensalidade: parseFloat(data.valor_mensalidade)
+            valor_mensalidade: parseFloat(data.valor_mensalidade),
+            nome_responsavel : data.nome_responsavel,
           });
           
           if(response.data.username){
@@ -147,7 +150,8 @@ async function fetch_students(){
     rg : data.rg,
     endereco : data.endereco,
     telefone : data.telefone,
-    valor_mensalidade: parseFloat(data.valor_mensalidade)
+    valor_mensalidade: parseFloat(data.valor_mensalidade),
+    nome_responsavel : data.nome_responsavel
   }
  const response = await api.put('students', data_fetch);
 
@@ -179,6 +183,43 @@ async function fetch_students(){
 }
    
 }
+
+
+async function deletarAluno(){
+  setOpenModalInfoStudent(false);
+
+  confirmAlert({
+    title: 'Confirmar?',
+    message: 'Deseja realmente deletar o aluno?',
+    buttons: [
+      {
+        label: 'Sim',
+        onClick: async () => {
+          setOpenModalInfoStudent(true);
+          const response = await api.delete(`students/${selectedStudents.id}`);
+              if(response.data.sucess){
+                  fetch_students();
+                  setOpenModalInfoStudent(false);
+                  setSelectedStudents([]);
+                  toast.success('Aluno deletado com sucesso');
+              }else{
+                setOpenModalInfoStudent(false);
+                setSelectedStudents([]);
+                toast.error(response.data.error);
+              }
+        }
+      },
+      {
+        label: 'Não',
+        onClick: () => {setOpenModalInfoStudent(true)}
+      }
+    ]
+  });
+  
+
+}
+
+
 function openModal_SelectedStudents(index){
   setSelectedStudents(dataStudents[index]);
    setOpenModalInfoStudent(true)
@@ -210,11 +251,11 @@ function openModal_SelectedStudents(index){
     <div>
     <ul>
     <HeaderLista>
-      <div style={{display:'flex', height:45, width:130,justifyContent:'center', backgroundColor:'#D8D8D8'}}>
+      <div style={{display:'flex', height:45, width:130,justifyContent:'center', backgroundColor:'#AAA'}}>
         <strong>Matrícula</strong>
       </div>
 
-      <div style={{display:'flex', height:45,width:260,justifyContent:'center', alignItems:'center', backgroundColor:'#D8D8D8', marginLeft:1}}>
+      <div style={{display:'flex', height:45,width:260,justifyContent:'center', alignItems:'center', backgroundColor:'#AAA', marginLeft:1}}>
         <strong>Nome</strong>
       </div>
 
@@ -226,14 +267,14 @@ function openModal_SelectedStudents(index){
     {
       studentList.map((value, index) => {
         return  <HeaderLista key={`page${ value.id}`}>
-              <div style={{height:45, width:130,paddingTop:15, paddingLeft:10, backgroundColor:'#AAA'}}>
+              <div style={{height:45, width:130,paddingTop:15, paddingLeft:10, backgroundColor:'#D8D8D8'}}>
                   <button type="button" onClick={() => openModal_SelectedStudents(index)}>
                     <strong>{value.matricula}</strong>
                   </button>
               
               </div>
 
-              <div style={{height:45,width:430, backgroundColor:'#AAA', marginLeft:1,paddingTop:15, paddingLeft:10}}>
+              <div style={{height:45,width:430, backgroundColor:'#D8D8D8', marginLeft:1,paddingTop:15, paddingLeft:10}}>
                   <button type="button" onClick={() => openModal_SelectedStudents(index)}>
                     <strong>{value.username}</strong>
                   </button>
@@ -292,6 +333,11 @@ function openModal_SelectedStudents(index){
             <Input name="valor_mensalidade" type='text' placeholder="Valor da mensalidade (obrigatório)" />
           </div>
 
+          <div>
+            <strong>Responsável</strong>
+            <Input name="nome_responsavel" type='text' placeholder="Nome do responsável (obrigatório)" />
+          </div>
+
             <button type="submit">Salvar</button>
 
         </Form>
@@ -320,14 +366,16 @@ function openModal_SelectedStudents(index){
           <strong>Endereço: {selectedStudents.endereco}</strong>
           <strong>Telefone: {selectedStudents.telefone}</strong>
           <strong>Mensalidade: R${selectedStudents.valor_mensalidade}</strong>
+          <strong>Responsável: {selectedStudents.nome_responsavel}</strong>
         </div>
         
         <div style={{display:'flex', width:'100%', justifyContent:'center', marginTop:35}}>
-        <button type="button" onClick={()=>{
-                                            setOpenModalInfoStudent(false);
-                                            setOpenModalUpdate(true)}}>
-                Editar</button>
-        <button style={{backgroundColor:'#FE2E64'}} type="button">Deletar</button>
+            <button type="button" onClick={()=>{
+                                                setOpenModalInfoStudent(false);
+                                                setOpenModalUpdate(true)}}>
+            Editar</button>
+            <button style={{backgroundColor:'#FE2E64'}} type="button" onClick={()=> deletarAluno()}>
+            Deletar</button>
         </div>
   
   </ModalInfoContainer>
@@ -379,6 +427,11 @@ function openModal_SelectedStudents(index){
           <div>
             <strong>Mensalidade</strong>
             <Input name="valor_mensalidade" type='text' placeholder="Valor da mensalidade (obrigatório)" />
+          </div>
+
+          <div>
+            <strong>Responsável</strong>
+            <Input name="nome_responsavel" type='text' placeholder="Nome do responsável (obrigatório)" />
           </div>
 
           <button type="submit">Salvar</button>

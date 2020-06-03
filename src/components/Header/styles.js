@@ -61,6 +61,18 @@ export const Profile = styled.div`
       font-size: 12px;
       color: #999;
     }
+
+    button {
+      border: 0;
+      background: none;
+
+      strong {
+      display: block;
+      margin-top: 2px;
+      font-size: 12px;
+      color: #999;
+    }
+    }
   }
 
   img {

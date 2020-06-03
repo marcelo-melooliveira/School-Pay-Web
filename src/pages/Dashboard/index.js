@@ -25,7 +25,16 @@ function Dashboard() {
       params : { date }
     });
 
-    console.tron.log(res)
+    
+    if(res.data.length === 0){
+      aux_payData.push(
+      <LoadContainer><strong>Nenhuma movimentação foi registada hoje</strong></LoadContainer>
+      )
+      setPayData(aux_payData);
+      setLoad(false);
+      return
+    }
+
 
     aux_payData.push(
       <ul>
@@ -76,7 +85,7 @@ function Dashboard() {
 
   
 
- 
+  
 
   return(
     <Container>
