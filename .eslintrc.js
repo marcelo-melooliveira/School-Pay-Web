@@ -40,6 +40,7 @@ module.exports = {
     'no-console': ['error', { allow: ['tron'] }],
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'off',
+    'no-nested-ternary' : 'off'
   },
   settings: {
     'import/resolver': {
