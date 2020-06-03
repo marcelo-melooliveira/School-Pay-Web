@@ -6,14 +6,13 @@ import api from '../../../services/api';
 import { signInSuccess, signFailure } from './actions';
 
 export function* signIn({ payload }) {
-  
   try {
-     const { email, password } = payload;
-    const response = yield call(api.post, 'sessions',{
+    const { email, password } = payload;
+    const response = yield call(api.post, 'sessions', {
       email,
-      password
+      password,
     });
-    
+
     const { token, user } = response.data;
 
     if (!user.admin) {
@@ -46,6 +45,7 @@ export function* signUp({ payload }) {
 
     history.push('/');
   } catch (err) {
+    console.log(err);
     toast.error('Falha no cadastro, verifique seus dados');
 
     yield put(signFailure());
