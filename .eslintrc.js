@@ -34,7 +34,8 @@ module.exports = {
     'react-hooks/exhaustive-deps': 'warn',
     'no-alert': 'off',
     'radix': 'off', 
-    'no-console' : 'off'
+    'no-console' : 'off',
+    'no-nested-ternary':'off'
   },
   settings: {
     'import/resolver': {
