@@ -1,4 +1,4 @@
-import React, {useState, useMemo, useEffect, useRef} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 // import { Form, Input} from '@rocketseat/unform'
 import { Form } from '@unform/web';
 import Modal from 'react-awesome-modal';
@@ -7,19 +7,15 @@ import { Digital } from 'react-activity';
 import * as Yup from 'yup';
 import { toast } from 'react-toastify';
 import 'react-activity/dist/react-activity.css';
-import { confirmAlert } from 'react-confirm-alert'; // Import
-import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 import api from '~/services/api';
 import Input from '../../components/Form/Input'
 
 import { Container,
-         Time,
          LoadContainer,
          StudentsContainer,
          HeaderContainer,
          SearchContainer,
          HeaderLista,
-         ButtonContainer,
          ModalContainer,
          ModalInfoContainer
         } from './styles';

@@ -1,4 +1,4 @@
-import React, {useState, useMemo, useEffect, useRef} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 // import { Form, Input} from '@rocketseat/unform'
 import { Form } from '@unform/web';
 import Modal from 'react-awesome-modal';
@@ -13,7 +13,6 @@ import api from '~/services/api';
 import Input from '../../components/Form/Input'
 
 import { Container,
-         Time,
          LoadContainer,
          StudentsContainer,
          HeaderContainer,
@@ -43,10 +42,10 @@ function Students() {
   const [dataStudents, setDataStudents] = useState([]);
   const [selectedStudents, setSelectedStudents] = useState([]);
   const [load, setLoad] = useState(true);
-  const [openModalAdd, setOpenModalAdd] = useState(false);
   const [openModalInfoStudent, setOpenModalInfoStudent] = useState(false);
   const [openModalUpdate, setOpenModalUpdate] = useState(false);
   const [search, setSearch] = useState('');
+  const [modalCadastro, setModalCadastro] = useState([]);
 
   const formRef = useRef(null);
 
@@ -84,7 +83,6 @@ async function fetch_students(){
   }
 
  
-
   async function criarAluno(data){
    
      
@@ -107,10 +105,10 @@ async function fetch_students(){
           
           if(response.data.username){
               fetch_students();
-              setOpenModalAdd(false)
-              toast.success('Aluno salvo com sucesso')
+              setModalCadastro([])
+              toast.success('Aluno criado com sucesso')
           }else{
-            setOpenModalAdd(false)
+            setModalCadastro([])
             toast.error('Ops. Houve algum erro no cadastro');
           }
 
@@ -223,8 +221,71 @@ async function deletarAluno(){
 function openModal_SelectedStudents(index){
   setSelectedStudents(dataStudents[index]);
    setOpenModalInfoStudent(true)
+}
 
+function abrir_modal_cadastro(){
+  const aux_modal_cadastro = [];
 
+  aux_modal_cadastro.push(
+
+   <Modal 
+   visible={ () => {return true} }
+   width="700"
+   height="600"
+   effect="fadeInUp"
+   onClickAway={() => setModalCadastro([])}
+>
+   <ModalContainer>
+   <strong>Cadastro de aluno</strong>
+   
+     <Form ref={formRef} onSubmit={(data) => criarAluno(data)}>
+         <div>
+           <strong>Matricula</strong>
+           <Input name="matricula" type='text' placeholder="Digite a matricula" />
+         </div>
+         
+         <div>
+           <strong>Nome</strong>
+           <Input name="username" type='text' placeholder="Digite o nome (obrigatório)" />
+         </div>
+         
+         <div>
+           <strong>CPF</strong>
+           <Input name="cpf" type='text' placeholder="Digite o CPF" />
+         </div>
+
+         <div>
+           <strong>RG</strong>
+           <Input name="rg" type='text' placeholder="Digite o RG" />
+         </div>
+
+         <div>
+           <strong>Endereço</strong>
+           <Input name="endereco" type='text' placeholder="Digite o endereço (obrigatório)" />
+       </div>
+         
+       <div>
+         <strong>Telefone</strong>
+         <Input name="telefone" type='text' placeholder="Digite o telefone (obrigatório)" />
+       </div>
+
+       <div>
+         <strong>Mensalidade</strong>
+         <Input name="valor_mensalidade" type='text' placeholder="Valor da mensalidade (obrigatório)" />
+       </div>
+
+       <div>
+         <strong>Responsável</strong>
+         <Input name="nome_responsavel" type='text' placeholder="Nome do responsável (obrigatório)" />
+       </div>
+
+         <button type="submit">Salvar</button>
+
+     </Form>
+   </ModalContainer>
+</Modal>
+  );
+  setModalCadastro(aux_modal_cadastro);
 }
  
   return(
@@ -260,7 +321,9 @@ function openModal_SelectedStudents(index){
       </div>
 
       <ButtonContainer>
-        <button type='button' onClick={()=> setOpenModalAdd(true)}>Adicionar aluno</button>
+        <button type='button' onClick={()=> {
+          abrir_modal_cadastro(true)}}>
+            Adicionar aluno</button>
       </ButtonContainer>
       
     </HeaderLista>
@@ -287,63 +350,8 @@ function openModal_SelectedStudents(index){
     </div>
       </StudentsContainer>)}
     
-      <Modal 
-      visible={openModalAdd}
-      width="700"
-      height="600"
-      effect="fadeInUp"
-      onClickAway={() => setOpenModalAdd(false)}
-  >
-      <ModalContainer>
-      <strong>Cadastro de aluno</strong>
-      
-        <Form ref={formRef} onSubmit={(data) => criarAluno(data)}>
-            <div>
-              <strong>Matricula</strong>
-              <Input name="matricula" type='text' placeholder="Digite a matricula" />
-            </div>
-            
-            <div>
-              <strong>Nome</strong>
-              <Input name="username" type='text' placeholder="Digite o nome (obrigatório)" />
-            </div>
-            
-            <div>
-              <strong>CPF</strong>
-              <Input name="cpf" type='text' placeholder="Digite o CPF" />
-            </div>
-
-            <div>
-              <strong>RG</strong>
-              <Input name="rg" type='text' placeholder="Digite o RG" />
-            </div>
-
-            <div>
-              <strong>Endereço</strong>
-              <Input name="endereco" type='text' placeholder="Digite o endereço (obrigatório)" />
-          </div>
-            
-          <div>
-            <strong>Telefone</strong>
-            <Input name="telefone" type='text' placeholder="Digite o telefone (obrigatório)" />
-          </div>
-
-          <div>
-            <strong>Mensalidade</strong>
-            <Input name="valor_mensalidade" type='text' placeholder="Valor da mensalidade (obrigatório)" />
-          </div>
-
-          <div>
-            <strong>Responsável</strong>
-            <Input name="nome_responsavel" type='text' placeholder="Nome do responsável (obrigatório)" />
-          </div>
-
-            <button type="submit">Salvar</button>
-
-        </Form>
-      </ModalContainer>
-  </Modal>
-
+     
+    {modalCadastro.length ? modalCadastro : null}
 
  
   <Modal 
