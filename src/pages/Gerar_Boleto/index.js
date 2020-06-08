@@ -95,10 +95,11 @@ const data_fetch = {
   description: `Mensalidade GymLife - ${selectedStudents.username}`
   
 }
+console.log(data_fetch);
 
  const response = await api.post('payment', data_fetch);
 
- console.tron.log(response.data);
+ console.log(response.data);
 
  if(response.data.sucess){
      fetch_students();
