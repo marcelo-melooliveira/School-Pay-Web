@@ -157,7 +157,7 @@ button {
       }
     }
 `;
-
+ 
 export const ModalContainer = styled.div`
   display: flex;
   width:100%;
@@ -166,6 +166,7 @@ export const ModalContainer = styled.div`
   background: linear-gradient(-90deg, #2E2E2E, #210B61);
   align-items:center;
   flex-direction: column;
+
   
   strong {
       color: #fff;
@@ -178,7 +179,7 @@ export const ModalContainer = styled.div`
     display:flex;
     flex-direction: column;
     margin: 0 10px;
-  }
+  
 
     div {
       display:flex;
@@ -218,6 +219,8 @@ export const ModalContainer = styled.div`
       font-weight: bold;
       text-align: center;
       }
+    }
+
     }
 
     button {
@@ -277,4 +280,42 @@ export const ModalInfoContainer = styled.div`
    
     }
       `;
+
+export const ContainerPicker = styled.div`
+  display:flex;
+  width:100%;
+  height:54px;
+  align-items:center;
+  justify-content:center;
+  flex-direction:row;
+
+  strong {
+      display:flex;
+      width:150px;
+      height: 41px;
+      align-items:center;
+      justify-content:center;
+      color: #fff;
+      background-color: #8A0808;
+      font-size: 15px;
+      margin-top:0px;
+    }
+
+  button {
+      margin: 0;
+      height: 0;
+      width: 0;
+      margin: 0;
+      background: #3b9eff;
+      font-weight: bold;
+      color: #fff;
+      border-radius: 4px;
+      transition: background 0.2s;
+
+      &:hover {
+        background: ${darken(0.08, '#3b9eff')};
+      }
+   
+    }
+`;
 

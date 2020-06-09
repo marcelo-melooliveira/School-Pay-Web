@@ -10,7 +10,7 @@ import pt from 'date-fns/locale/pt';
 import { MdChevronLeft, MdChevronRight } from 'react-icons/md';
 import { Digital } from 'react-activity';
 import 'react-activity/dist/react-activity.css';
-  import DatePicker, {registerLocale} from "react-datepicker";
+import DatePicker, {registerLocale} from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import api from '~/services/api';
 
@@ -134,6 +134,7 @@ function Payments() {
     <button type="button" onClick={() => handleMounth(false)}>
       <MdChevronLeft size={36} color="#fff" />
     </button>
+    
     <DatePicker
         selected={date}
         onChange={handleChangeDay}

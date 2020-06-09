@@ -1,14 +1,19 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect, useRef, useMemo} from 'react';
 // import { Form, Input} from '@rocketseat/unform'
 import { Form } from '@unform/web';
+import {format} from 'date-fns';
+import pt from 'date-fns/locale/pt';
 import Modal from 'react-awesome-modal';
-import { IoMdBarcode } from 'react-icons/io';
+import { IoMdBarcode, IoIosCalendar } from 'react-icons/io';
 import { Digital } from 'react-activity';
 import * as Yup from 'yup';
 import { toast } from 'react-toastify';
 import 'react-activity/dist/react-activity.css';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import api from '~/services/api';
-import Input from '../../components/Form/Input'
+import Input from '../../components/Form/Input';
+
 
 import { Container,
          LoadContainer,
@@ -17,7 +22,8 @@ import { Container,
          SearchContainer,
          HeaderLista,
          ModalContainer,
-         ModalInfoContainer
+         ModalInfoContainer,
+         ContainerPicker
         } from './styles';
 
 
@@ -38,10 +44,14 @@ function Gerar_Boleto() {
   const [openModalInfoStudent, setOpenModalInfoStudent] = useState(false);
   const [openModalBoleto, setOpenModalBoleto] = useState(false);
   const [search, setSearch] = useState('');
+  const [date, setDate] = useState(new Date());
 
   const formRef = useRef(null);
 
-
+  const dateFormatted = useMemo(
+    () => format(date, "MMMM 'de' yyyy", { locale: pt }),
+    [date]
+  );
  
 
 async function fetch_students(){  
@@ -78,6 +88,7 @@ async function fetch_students(){
     for(let i=1; i < aux_name.length; i+=1){
        sobrenome = `${sobrenome} ${aux_name[i]}`;
     }
+  const aux_data_ref = format(date, "MM'/'yyyy", { locale: pt })
   
   try {
 
@@ -92,7 +103,9 @@ const data_fetch = {
   email : data.email,
   cpf : data.cpf,
   valor_mensalidade: parseFloat(data.valor_mensalidade),
-  description: `Mensalidade GymLife - ${selectedStudents.username}`
+  description: `Mensalidade GymLife - ${selectedStudents.username}`,
+  data_ref: aux_data_ref
+  
   
 }
 console.log(data_fetch);
@@ -135,9 +148,11 @@ console.log(data_fetch);
 
 function openModal_SelectedStudents(index){
   setSelectedStudents(dataStudents[index]);
-   setOpenModalInfoStudent(true)
+  setOpenModalInfoStudent(true)
+}
 
-
+function handleChangeDay(date_change) {
+  setDate(date_change)
 }
  
   return(
@@ -239,9 +254,22 @@ function openModal_SelectedStudents(index){
       effect="fadeInUp"
       onClickAway={() => setOpenModalBoleto(false)}
   >
+                    
       <ModalContainer>
       <strong>Boleto ({selectedStudents.username})</strong>
       
+            <ContainerPicker>
+            <strong>Mês do Pagamento</strong>
+                 <DatePicker
+                      selected={date}
+                      onChange={handleChangeDay}
+                      customInput={<strong style={{backgroundColor:'rgba(255, 255, 255, 0.85)', cursor:'pointer', color:'#000', width:200}}><IoIosCalendar style={{marginRight:5}} size={20} color="#210B61" />{dateFormatted}</strong>}
+                      locale='pt'
+                      showMonthYearPicker
+                      showFullMonthYearPicker
+                    />
+            </ContainerPicker>
+
         <Form  onSubmit={(data) => criarBoleto(data)}>
                        
             <div>
