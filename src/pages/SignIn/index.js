@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Form, Input } from '@rocketseat/unform';
 import * as Yup from 'yup';
 import { signInRequest } from '../../store/modules/auth/actions';
-import logo from '../../assets/book.png';
+import logo from '../../assets/icon.png';
 
 // import { Container } from './styles';
 

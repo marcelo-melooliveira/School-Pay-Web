@@ -103,14 +103,14 @@ const data_fetch = {
   email : data.email,
   cpf : data.cpf,
   valor_mensalidade: parseFloat(data.valor_mensalidade),
-  description: `Mensalidade GymLife - ${selectedStudents.username}`,
+  description: `Mensalidade SchoolPay - ${selectedStudents.username}`,
   data_ref: aux_data_ref
   
   
 }
 console.log(data_fetch);
 
- const response = await api.post('payment', data_fetch);
+ const response = await api.post('payment-boleto', data_fetch);
 
  console.log(response.data);
 

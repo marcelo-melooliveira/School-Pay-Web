@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { signOut } from '~/store/modules/auth/actions';
 // import Notifications from '../Notifications';
 
-import logo from '../../assets/book-purple.png';
+import logo from '../../assets/icon.png';
 
 import { Container, Content, Profile } from './styles';
 
@@ -30,7 +30,7 @@ export default function Header() {
         <aside>
           <Profile>
             <div>
-              <strong>{profile.username}</strong>
+              <strong>{profile.sobrenome}</strong>
               <button type="button" onClick={() => handleSignOut()}>
                 <strong>Sair</strong>
               </button>
