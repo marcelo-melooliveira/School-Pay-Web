@@ -51,7 +51,7 @@ padding-right: 10px;
 padding-bottom: 20px;
 border-radius:5px;
 display: flex;
-background-color:#F2F2F2;
+background-color:#E0F2F7;
 flex-direction: column;
 margin-top:5px;
 margin: 0 10px;

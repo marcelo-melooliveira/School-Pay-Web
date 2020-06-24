@@ -159,19 +159,19 @@ function Payments() {
     <div>
       <ul>
       <div style={{display:'flex', flexDirection:'column'}}>
-      <div style={{display:'flex', height:45, width:561,justifyContent:'center', alignItems:'center', backgroundColor:'#AAA'}}>
+      <div style={{display:'flex', height:45, width:562,justifyContent:'center', alignItems:'center', backgroundColor:'#819FF7', borderTopRightRadius: 10, borderTopLeftRadius: 10}}>
               <strong>Pagamentos Efetuados</strong>
             </div>
         <HeaderLista>
-            <div style={{display:'flex', height:45, width:130,justifyContent:'center', backgroundColor:'#AAA'}}>
+            <div style={{display:'flex', height:45, width:130,justifyContent:'center', backgroundColor:'#D8D8D8'}}>
               <strong>Matrícula</strong>
             </div>
 
-            <div style={{display:'flex', height:45,width:330,justifyContent:'center', alignItems:'center', backgroundColor:'#AAA', marginLeft:1}}>
+            <div style={{display:'flex', height:45,width:330,justifyContent:'center', alignItems:'center', backgroundColor:'#D8D8D8', marginLeft:1}}>
               <strong>Nome</strong>
             </div> 
 
-            <div style={{display:'flex', height:45,width:100,justifyContent:'center', alignItems:'center', backgroundColor:'#AAA', marginLeft:1}}>
+            <div style={{display:'flex', height:45,width:100,justifyContent:'center', alignItems:'center', backgroundColor:'#D8D8D8', marginLeft:1}}>
               <strong>Valor Pago</strong>
             </div>
         </HeaderLista>
@@ -211,15 +211,15 @@ function Payments() {
     <div>
       <ul>
       <div style={{display:'flex', flexDirection:'column'}}>
-      <div style={{display:'flex', height:45, width:561,justifyContent:'center', alignItems:'center', backgroundColor:'#AAA'}}>
+      <div style={{display:'flex', height:45, width:561,justifyContent:'center', alignItems:'center',  backgroundColor:'#F7819F', borderTopRightRadius: 10, borderTopLeftRadius: 10}}>
               <strong>Pagamentos Pendentes</strong>
             </div>
         <HeaderLista>
-            <div style={{display:'flex', height:45, width:130,justifyContent:'center', backgroundColor:'#AAA'}}>
+            <div style={{display:'flex', height:45, width:130,justifyContent:'center', backgroundColor:'#D8D8D8'}}>
               <strong>Matrícula</strong>
             </div>
 
-            <div style={{display:'flex', height:45,width:430,justifyContent:'center', alignItems:'center', backgroundColor:'#AAA', marginLeft:1}}>
+            <div style={{display:'flex', height:45,width:430,justifyContent:'center', alignItems:'center', backgroundColor:'#D8D8D8', marginLeft:1}}>
               <strong>Nome</strong>
             </div> 
         </HeaderLista>

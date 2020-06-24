@@ -10,21 +10,22 @@ import api from '~/services/api';
 import { Container, Time, LoadContainer} from './styles';
 
 function Dashboard() {
-  const [date] = useState(new Date());
+  const [date, setDate] = useState(new Date());
   const [payData, setPayData] = useState();
   const [load, setLoad] = useState(true);
+  const [dateFormatted, setDateFormatted] = useState('');
 
-  const dateFormatted = useMemo(
-    () => format(date, "d 'de' MMMM", { locale: pt }),
-    [date]
-  );
+  // const dateFormatted = useMemo(() => {format(date, "d 'de' MMMM", { locale: pt })},
+  //   [date]);
 
   async function payments(){
     const aux_payData =[];
+    const aux_date = format(date, "yyyy'-'MM'-'dd")
     const res = await api.get('search-payments-today',{
-      params : { date }
+      params : { date: aux_date }
     });
-
+console.log(aux_date);   
+console.log(res.data);
     
     if(res.data.length === 0){
       aux_payData.push(
@@ -76,7 +77,9 @@ function Dashboard() {
   }
 
   useEffect(() => { 
-     payments();     
+     payments();
+     const aux_dateFormated =  format(date, "d 'de' MMMM", { locale: pt });
+     setDateFormatted(aux_dateFormated);
   }, []);
 
   // useEffect(()=>{
