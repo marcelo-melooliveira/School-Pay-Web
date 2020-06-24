@@ -3,9 +3,7 @@ import {
   format,
   subMonths,
   addMonths,
-  parseISO,
 } from 'date-fns';
-import { utcToZonedTime } from 'date-fns-tz';
 import pt from 'date-fns/locale/pt';
 import { MdChevronLeft, MdChevronRight } from 'react-icons/md';
 import { Digital } from 'react-activity';
@@ -16,7 +14,6 @@ import api from '~/services/api';
 
 
 import { Container,
-         Time,
          LoadContainer,
          PaymentsContainer,
          HeaderLista,
@@ -27,7 +24,7 @@ registerLocale('pt', pt)
 
 function Payments() {
   const [date, setDate] = useState(new Date());
-  const [payData, setPayData] = useState([]);
+  // const [payData, setPayData] = useState([]);
   const [load, setLoad] = useState(true);
   const [paymentListPago, setPaymentListPago] = useState([]);
   const [paymentListPendente, setPaymentListPendente] = useState([]);
