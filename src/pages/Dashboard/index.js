@@ -10,7 +10,7 @@ import api from '~/services/api';
 import { Container, Time, LoadContainer} from './styles';
 
 function Dashboard() {
-  const [date, setDate] = useState(new Date());
+  const [date] = useState(new Date());
   const [payData, setPayData] = useState();
   const [load, setLoad] = useState(true);
 
